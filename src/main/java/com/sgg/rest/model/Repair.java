@@ -2,6 +2,7 @@ package com.sgg.rest.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 @Entity
@@ -24,6 +26,8 @@ public class Repair {
     private Integer area;
     private String address;
     private Integer repair_status;
+    @OneToOne(cascade=CascadeType.ALL)
+    private ApplicationUser repairman;
     private String material;
 	@Column(name ="result",length=1024)
     private String result;
@@ -78,6 +82,12 @@ public class Repair {
 	}
 	public void setMaterial(String material) {
 		this.material = material;
+	}
+	public ApplicationUser getRepairman() {
+		return repairman;
+	}
+	public void setRepairman(ApplicationUser repairman) {
+		this.repairman = repairman;
 	}
 	public String getResult() {
 		return result;

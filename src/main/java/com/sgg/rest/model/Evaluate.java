@@ -1,20 +1,19 @@
 package com.sgg.rest.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 @Entity
 public class Evaluate {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-	@ManyToOne(targetEntity = ApplicationUser.class)
-	@JoinColumn(name="employee_id")
-    private ApplicationUser employee;
+    @OneToOne(cascade=CascadeType.ALL)
+    private Repair repair;
     private Integer rate;
     private Integer workload;
 	@Column(name ="comments",length=1024)
@@ -24,12 +23,6 @@ public class Evaluate {
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public ApplicationUser getEmployee() {
-		return employee;
-	}
-	public void setEmployee(ApplicationUser employee) {
-		this.employee = employee;
 	}
 	public Integer getRate() {
 		return rate;

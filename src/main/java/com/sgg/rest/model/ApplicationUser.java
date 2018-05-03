@@ -22,8 +22,6 @@ public class ApplicationUser {
     private Integer profession;
     @OneToMany(mappedBy = "user",fetch=FetchType.EAGER)
     private Set<Repair> RepairSet=new HashSet<Repair>();
-    @OneToMany(mappedBy = "employee",fetch=FetchType.EAGER)
-    private Set<Evaluate> EvaluateSet=new HashSet<Evaluate>();
 	public Integer getId() {
 		return id;
 	}
