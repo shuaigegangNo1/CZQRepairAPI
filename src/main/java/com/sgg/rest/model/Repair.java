@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Repair {
     @Id
@@ -20,6 +22,7 @@ public class Repair {
     private Integer id;
 	@ManyToOne(targetEntity = ApplicationUser.class)
 	@JoinColumn(name="user_id")
+	@JsonBackReference
     private ApplicationUser user;
 	@Column(name ="content",length=1024)
     private String content;

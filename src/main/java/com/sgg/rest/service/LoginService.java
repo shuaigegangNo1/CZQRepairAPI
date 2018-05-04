@@ -29,7 +29,6 @@ public class LoginService {
 		return null;
 	}
 	public ApplicationUser loadUserByUserId(String userId) {
-		// TODO Auto-generated method stub
 		return userRepository.findByName(userId);
 	}
 }
