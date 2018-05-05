@@ -24,6 +24,12 @@ public class Evaluate {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	public Repair getRepair() {
+		return repair;
+	}
+	public void setRepair(Repair repair) {
+		this.repair = repair;
+	}
 	public Integer getRate() {
 		return rate;
 	}

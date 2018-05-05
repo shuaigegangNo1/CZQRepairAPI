@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sgg.rest.model.Repair;
 import com.sgg.rest.model.RepairQuery;
 import com.sgg.rest.service.RepairService;
-
+import static com.sgg.rest.util.SystemConstants.PAGESIZE;
 @RestController
 @RequestMapping("/repair")
 public class RepairController {
@@ -29,12 +29,17 @@ public class RepairController {
 		map.put("result",res);
 		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 	}
-	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public ResponseEntity<Map<String,Object>> updateRepair(@RequestBody Repair repair) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		boolean res = repairService.updateRepair(repair.getId(), repair);
+		map.put("result", res);
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
     @RequestMapping(value = "querylist",method = RequestMethod.POST)  
     public  ResponseEntity<Map<String,Object>> getRepairQueryList(@RequestParam Integer page, @RequestBody RepairQuery repairQuery){  
     		Map<String,Object> map = new HashMap<String,Object>();
-	    Integer	size =10; //pagesize
-        Page<Repair> paginationRepair = repairService.findRepairCriteria(page, size, repairQuery);
+        Page<Repair> paginationRepair = repairService.findRepairCriteria(page, PAGESIZE, repairQuery);
         map.put("result", paginationRepair);
         return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);  
     }
