@@ -20,7 +20,7 @@ public class ApplicationUser {
     private String password;
     private Integer role;
     private Integer profession;
-    @OneToMany(mappedBy = "user",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "applicationUser",fetch=FetchType.EAGER)
     private Set<Repair> RepairSet=new HashSet<Repair>();
 	public Integer getId() {
 		return id;

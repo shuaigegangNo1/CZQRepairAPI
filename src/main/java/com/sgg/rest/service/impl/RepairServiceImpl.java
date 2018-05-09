@@ -31,7 +31,7 @@ public class RepairServiceImpl implements RepairService {
 	public boolean createRepair(String userId, Repair repair) {
 		ApplicationUser user = userRepository.findByName(userId);
 		if (user!=null) {
-			repair.setUser(user);
+			repair.setApplicationUser(user);
 			repair.setCreate_time(new Date());
 			repairRepository.save(repair);
 			return true;
@@ -53,6 +53,11 @@ public class RepairServiceImpl implements RepairService {
 			f_repair.setArea(repair.getArea());
 			f_repair.setContent(repair.getContent());
 			f_repair.setComments(repair.getComments());
+			f_repair.setRepair_status(repair.getRepair_status());
+			f_repair.setResult(repair.getResult());
+			f_repair.setMaterial(repair.getMaterial());
+			f_repair.setRate(repair.getRate());
+			f_repair.setRepair_status(repair.getRepair_status());
 			f_repair.setUpdate_time(new Date());
 			repairRepository.save(f_repair);
 			return true;
@@ -72,14 +77,23 @@ public class RepairServiceImpl implements RepairService {
         Page<Repair> repairPage = repairRepository.findAll(new Specification<Repair>(){  
             @Override  
             public Predicate toPredicate(Root<Repair> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {  
-            	    Predicate p1 = criteriaBuilder.equal(root.get("user").get("name").as(String.class), repairQuery.getUserName());
-                Predicate p2 = criteriaBuilder.like(root.get("content").as(String.class), "%"+ repairQuery.getContent() + "%"); 
-                if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
-                		Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
-                		query.where(criteriaBuilder.and(p1,p2,p3));  
-                }else {
-                			query.where(criteriaBuilder.and(p1,p2));  
-                }
+            	Predicate p2 = criteriaBuilder.like(root.get("content").as(String.class), "%"+ repairQuery.getContent() + "%"); 
+            	if(repairQuery.getUserName()!=null&&!repairQuery.getUserName().equals("")) {
+            		Predicate p1 = criteriaBuilder.equal(root.get("applicationUser").get("name").as(String.class), repairQuery.getUserName());
+            		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
+            			Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+            			query.where(criteriaBuilder.and(p3,p2,p1));  
+            		}else {
+            			query.where(criteriaBuilder.and(p2,p1)); 
+            		}
+            	} else {
+            		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
+            			Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+            			query.where(criteriaBuilder.and(p3,p2));  
+            		}else {
+            			query.where(criteriaBuilder.and(p2)); 
+            		}
+            	}
                 return query.getRestriction();  
             }  
         },pageable);  

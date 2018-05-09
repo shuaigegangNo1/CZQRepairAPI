@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,13 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sgg.rest.model.Repair;
 import com.sgg.rest.model.RepairQuery;
+import com.sgg.rest.repository.RepairRepository;
+import com.sgg.rest.repository.RepairRepositoryCustom;
 import com.sgg.rest.service.RepairService;
 import static com.sgg.rest.util.SystemConstants.PAGESIZE;
 @RestController
 @RequestMapping("/repair")
 public class RepairController {
 	@Autowired  
-	RepairService repairService;  
+	RepairService repairService;
+	@Autowired  
+	RepairRepositoryCustom repairRepositoryCustom;  
+	@Autowired  
+	RepairRepository repairRepository;  
 	@RequestMapping(value="/create", method= {RequestMethod.POST})
 	public ResponseEntity<Map<String,Object>> createRepair(@RequestParam String userId,@RequestBody Repair repair) {
 		boolean res =repairService.createRepair(userId, repair);
@@ -43,4 +50,22 @@ public class RepairController {
         map.put("result", paginationRepair);
         return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);  
     }
+	@GetMapping(path="/assertRepairList")
+	public ResponseEntity<Map<String,Object>> getAssertRepairList() {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("AssertRepairList",repairRepositoryCustom.getAssertRepairList() );
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
+	@GetMapping(path="/detail4Assert")
+	public ResponseEntity<Map<String,Object>> getAssertRepairDetail(@RequestParam Integer repairId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("result", repairRepositoryCustom.getAssertRepair(repairId));
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
+	@GetMapping(path="/detail")
+	public ResponseEntity<Map<String,Object>> getRepairDetail(@RequestParam Integer repairId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("result", repairRepository.findOne(repairId));
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
 }

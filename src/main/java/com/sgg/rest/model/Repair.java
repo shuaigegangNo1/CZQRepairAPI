@@ -23,7 +23,7 @@ public class Repair {
 	@ManyToOne(targetEntity = ApplicationUser.class)
 	@JoinColumn(name="user_id")
 	@JsonBackReference
-    private ApplicationUser user;
+    private ApplicationUser applicationUser;
 	@Column(name ="content",length=1024)
     private String content;
     private Integer area;
@@ -50,11 +50,11 @@ public class Repair {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public ApplicationUser getUser() {
-		return user;
+	public ApplicationUser getApplicationUser() {
+		return applicationUser;
 	}
-	public void setUser(ApplicationUser user) {
-		this.user = user;
+	public void setApplicationUser(ApplicationUser applicationUser) {
+		this.applicationUser = applicationUser;
 	}
 	public String getContent() {
 		return content;
