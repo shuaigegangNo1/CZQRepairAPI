@@ -38,4 +38,9 @@ public class EvaluateServiceImpl implements EvaluateService {
 		return false;
 	}
 
+//	@Override
+//	public Evaluate getEvaluate(Integer repairId) {
+//		return null;
+//	}
+
 }

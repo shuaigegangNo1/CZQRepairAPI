@@ -21,6 +21,7 @@ import com.sgg.rest.model.RepairQuery;
 import com.sgg.rest.repository.RepairRepository;
 import com.sgg.rest.repository.UserRepository;
 import com.sgg.rest.service.RepairService;
+import com.sgg.rest.util.StringUtils;
 @Service
 public class RepairServiceImpl implements RepairService {
 	@Resource  
@@ -49,15 +50,30 @@ public class RepairServiceImpl implements RepairService {
 	public boolean updateRepair(Integer repairId, Repair repair) {
 		Repair f_repair = repairRepository.findOne(repairId);
 		if (f_repair!= null) {
-			f_repair.setAddress(repair.getAddress());
-			f_repair.setArea(repair.getArea());
-			f_repair.setContent(repair.getContent());
-			f_repair.setComments(repair.getComments());
-			f_repair.setRepair_status(repair.getRepair_status());
-			f_repair.setResult(repair.getResult());
-			f_repair.setMaterial(repair.getMaterial());
-			f_repair.setRate(repair.getRate());
-			f_repair.setRepair_status(repair.getRepair_status());
+			if (StringUtils.IsNull(repair.getAddress())) {
+				f_repair.setAddress(repair.getAddress());
+			}
+			if (StringUtils.IsNull(repair.getArea())) {
+				f_repair.setArea(repair.getArea());
+			}
+			if (StringUtils.IsNull(repair.getContent())) {
+				f_repair.setContent(repair.getContent());
+			}
+			if (StringUtils.IsNull(repair.getComments())) {
+				f_repair.setComments(repair.getComments());
+			}
+			if (StringUtils.IsNull(repair.getResult())) {
+				f_repair.setResult(repair.getResult());
+			}
+			if (StringUtils.IsNull(repair.getRepair_status())) {
+				f_repair.setRepair_status(repair.getRepair_status());
+			}
+			if (StringUtils.IsNull(repair.getMaterial())) {
+				f_repair.setMaterial(repair.getMaterial());
+			}
+			if (StringUtils.IsNull(repair.getRate())) {
+				f_repair.setRate(repair.getRate());
+			}
 			f_repair.setUpdate_time(new Date());
 			repairRepository.save(f_repair);
 			return true;

@@ -31,7 +31,9 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 	public boolean createRepairRecord(Integer repairId, RepairRecord repairRecord) {
 		Repair repair = repairRepository.findOne(repairId);
 		if (repair!= null) {
+			repairRecord.setRepair(repair);
 			repairRecord.setCreate_time(new Date());
+			repairRecord.setUpdate_time(new Date());
 			repairRecordRepository.save(repairRecord);
 			return true;
 		}
@@ -63,7 +65,8 @@ public class RepairRecordServiceImpl implements RepairRecordService {
             @Override  
             public Predicate toPredicate(Root<RepairRecord> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {  
             	    Predicate p1 = criteriaBuilder.equal(root.get("repair").get("id").as(String.class), baseQuery.getId());
-            	    query.where(criteriaBuilder.and(p1));
+            	    Predicate p2 = criteriaBuilder.like(root.get("repair_progress").as(String.class), "%"+ baseQuery.getInfo() + "%"); 
+            	    query.where(criteriaBuilder.and(p1,p2));
                 return query.getRestriction();  
             }  
         },pageable);  
