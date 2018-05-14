@@ -3,6 +3,7 @@ package com.sgg.rest.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -104,6 +105,13 @@ public class UserController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		ApplicationUser user = userRepository.findByName(name);
 		map.put("result", user);
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
+	@RequestMapping(value="/userList", method=RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> getUserListByRole(@RequestParam Integer role) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<ApplicationUser> userList = userRepository.findUsersByRole(role);
+		map.put("result", userList);
 		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 	}
 }

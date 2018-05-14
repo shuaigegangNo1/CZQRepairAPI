@@ -68,4 +68,10 @@ public class RepairController {
 		map.put("result", repairRepository.findOne(repairId));
 		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 	}
+	@GetMapping(path="/countByRepairStatus")
+	public ResponseEntity<Map<String,Object>> getCountByRepairStatus(@RequestParam Integer repairStatus) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("result", repairRepository.countByRepairStatus(repairStatus));
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
 }

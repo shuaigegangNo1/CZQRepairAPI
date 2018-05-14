@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.sgg.rest.model.ApplicationUser;
 
@@ -26,12 +27,9 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Integer>,
     ApplicationUser findByName(String name);
     
     @Query(value="select * from application_user", nativeQuery=true )
-//    @Modifying
     public List<ApplicationUser> findallAccounts();
     
-//    @Modifying
-//    @Query("UPDATE User c SET c.name = :name WHERE c.id = :id")
-//    Integer setNameForId(@Param("name"); String name, @Param("id")
-//    @Query(value="select * from application_user where name=?1", nativeQuery=true)
-//    Page<ApplicationUser> findStudent(String name, Pageable pageable);
+    //@Query(value=" select * from application_user where role = :role", nativeQuery=true)
+	@Query(" select u from ApplicationUser u where role = :role")
+	List<ApplicationUser> findUsersByRole(@Param("role") Integer role);
 }
