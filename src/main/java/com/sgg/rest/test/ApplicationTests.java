@@ -37,7 +37,6 @@ import freemarker.template.Template;
 	message.setTo("455382077@qq.com");
 	message.setSubject("主题:haha");
 	message.setText("测试邮件内容6666");
-	 
 	mailSender.send(message);
 	}
 	 
@@ -69,7 +68,6 @@ import freemarker.template.Template;
 	    helper.setFrom("1532697195@qq.com");
 	    helper.setTo("455382077@qq.com");
 	    helper.setSubject("标题：发送Html内容");
-	 
 	    StringBuffer sb = new StringBuffer();
 	    sb.append("<h1>大标题-h1</h1>")
 	        .append("<p style='color:#F00'>红色字</p>")
@@ -91,7 +89,6 @@ import freemarker.template.Template;
 	    helper.setSubject("主题：带静态资源的邮件");
 	    //第二个参数指定发送的是HTML格式,同时cid:是固定的写法
 	    helper.setText("<html><body>带静态资源的邮件内容 图片:<img src= 'cid:pic' /></body></html>", true);
-	 
 	    FileSystemResource file = new FileSystemResource(new File("src/main/resources/image/WechatIMG1.jpeg"));
 	    helper.addInline("pic",file);
 	  } catch (Exception e){
@@ -112,11 +109,9 @@ import freemarker.template.Template;
 		  helper.setFrom("1532697195@qq.com");
 		  helper.setTo("455382077@qq.com");
 	      helper.setSubject("主题：模板邮件");
-	 
 	      Map<String, Object> model = new HashMap();
 	      model.put("username", "zggdczfr");
-	 
-	      //修改 application.properties 文件中的读取路径
+//	      修改 application.properties 文件中的读取路径
 //	      FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
 //	      configurer.setTemplateLoaderPath("classpath:templates");
 	      //读取 html 模板

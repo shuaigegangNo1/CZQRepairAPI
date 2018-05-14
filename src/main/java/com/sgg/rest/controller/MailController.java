@@ -21,7 +21,6 @@ public class MailController {
     @RequestMapping("sendemail")  
     public String sendEmail() throws MessagingException  
     {  
-
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();  
             final MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setFrom("18852950196@163.com");
@@ -30,7 +29,6 @@ public class MailController {
             message.setSubject("测试邮件主题");  
             message.setText("测试邮件内容");  
             this.mailSender.send(mimeMessage);  
-
             return "已发送";  
     }  
 }  
