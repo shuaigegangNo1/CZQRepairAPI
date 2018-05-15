@@ -6,6 +6,7 @@ public class RepairQuery {
     private Integer area;
     private Integer repair_status;
     private String userName;
+    private String isFinish;
 	public String getInfo() {
 		return info;
 	}
@@ -35,6 +36,12 @@ public class RepairQuery {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getIsFinish() {
+		return isFinish;
+	}
+	public void setIsFinish(String isFinish) {
+		this.isFinish = isFinish;
 	}
     
 }

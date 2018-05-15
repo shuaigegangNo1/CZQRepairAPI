@@ -35,6 +35,8 @@ public class Repair {
 	@Column(name ="result",length=1024)
     private String result;
     private String rate;
+    //TODO control user if evaluate the repair
+    //private boolean isEvaluate;
     private String is_vaild ="y";
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date repair_time;

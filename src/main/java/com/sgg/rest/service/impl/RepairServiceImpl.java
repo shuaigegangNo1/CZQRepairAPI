@@ -22,12 +22,14 @@ import com.sgg.rest.repository.RepairRepository;
 import com.sgg.rest.repository.UserRepository;
 import com.sgg.rest.service.RepairService;
 import com.sgg.rest.util.StringUtils;
+import static com.sgg.rest.util.SystemConstants.N;
 @Service
 public class RepairServiceImpl implements RepairService {
 	@Resource  
     UserRepository userRepository;
 	@Resource  
     RepairRepository repairRepository;
+	
 	@Override
 	public boolean createRepair(String userId, Repair repair) {
 		ApplicationUser user = userRepository.findByName(userId);
@@ -97,15 +99,27 @@ public class RepairServiceImpl implements RepairService {
             	if(repairQuery.getUserName()!=null&&!repairQuery.getUserName().equals("")) {
             		Predicate p1 = criteriaBuilder.equal(root.get("applicationUser").get("name").as(String.class), repairQuery.getUserName());
             		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
-            			Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
-            			query.where(criteriaBuilder.and(p3,p2,p1));  
+            			if(repairQuery.getIsFinish().equals(N)) {
+            				Predicate p3 = criteriaBuilder.notEqual(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+            				query.where(criteriaBuilder.and(p3,p2,p1));  
+            			}else {
+            				Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+            				query.where(criteriaBuilder.and(p3,p2,p1));  
+            			}
             		}else {
             			query.where(criteriaBuilder.and(p2,p1)); 
             		}
             	} else {
             		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
-            			Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
-            			query.where(criteriaBuilder.and(p3,p2));  
+            			if(repairQuery.getIsFinish().equals(N)) {
+            				Predicate p3 = criteriaBuilder.notEqual(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+            				query.where(criteriaBuilder.and(p3,p2));  
+            			}else {
+            				Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+            				query.where(criteriaBuilder.and(p3,p2));  
+            			}
+//            			Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+//            			query.where(criteriaBuilder.and(p3,p2));  
             		}else {
             			query.where(criteriaBuilder.and(p2)); 
             		}
@@ -114,6 +128,18 @@ public class RepairServiceImpl implements RepairService {
             }  
         },pageable);  
         return repairPage;  
+	}
+
+	@Override
+	public boolean updateRepairman(Integer repairId, Integer repairmanId) {
+		Repair f_repair = repairRepository.findOne(repairId);
+		ApplicationUser repairman = userRepository.findOne(repairmanId);
+		if(repairman !=null) {
+			f_repair.setRepairman(repairman);
+			repairRepository.save(f_repair);
+			return true;
+		}
+		return false;
 	}
 
 }
