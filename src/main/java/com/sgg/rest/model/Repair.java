@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Repair {
     @Id
@@ -20,7 +22,8 @@ public class Repair {
     private Integer id;
 	@ManyToOne(targetEntity = ApplicationUser.class)
 	@JoinColumn(name="user_id")
-    private ApplicationUser user;
+	@JsonBackReference
+    private ApplicationUser applicationUser;
 	@Column(name ="content",length=1024)
     private String content;
     private Integer area;
@@ -32,6 +35,8 @@ public class Repair {
 	@Column(name ="result",length=1024)
     private String result;
     private String rate;
+    //TODO control user if evaluate the repair
+    //private boolean isEvaluate;
     private String is_vaild ="y";
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date repair_time;
@@ -47,11 +52,11 @@ public class Repair {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public ApplicationUser getUser() {
-		return user;
+	public ApplicationUser getApplicationUser() {
+		return applicationUser;
 	}
-	public void setUser(ApplicationUser user) {
-		this.user = user;
+	public void setApplicationUser(ApplicationUser applicationUser) {
+		this.applicationUser = applicationUser;
 	}
 	public String getContent() {
 		return content;

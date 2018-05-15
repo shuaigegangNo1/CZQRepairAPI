@@ -3,6 +3,7 @@ package com.sgg.rest.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,7 +27,7 @@ import com.sgg.rest.model.ApplicationUser;
 import com.sgg.rest.model.UserQuery;
 import com.sgg.rest.repository.UserRepository;
 import com.sgg.rest.service.UserService;
-
+import static com.sgg.rest.util.SystemConstants.PAGESIZE;
 @RestController
 @RequestMapping("/user") // This means URL's start with /user (after Application path)
 public class UserController {
@@ -64,20 +65,16 @@ public class UserController {
 		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 	}
 
-    @RequestMapping(value = "userQuery",method = RequestMethod.POST)  
-    public Page<ApplicationUser> findUserQuery(@RequestBody UserQuery userQuery){  
-    	int page =0; //页码
-    	int 	size =10; //页面大小
-        Page<ApplicationUser> datas = userService.findUserCriteria(page, size,userQuery);  
-        return datas;  
-    }
+//    @RequestMapping(value = "userQuery",method = RequestMethod.POST)  
+//    public Page<ApplicationUser> findUserQuery(@RequestBody UserQuery userQuery){  
+//    	int page =0; //页码
+//    	int 	size =10; //页面大小
+//        Page<ApplicationUser> datas = userService.findUserCriteria(page, size,userQuery);  
+//        return datas;  
+//    }
 	@RequestMapping(value="/update", method=RequestMethod.POST)
 	public ResponseEntity<Map<String,Object>> UpdateUser(@RequestBody ApplicationUser u) {
 		Map<String,Object> map = new HashMap<String,Object>();
-//		ApplicationUser f_user = userRepository.findOne(u.getId());
-//		f_user.setEmail(u.getEmail());
-//		f_user.setName(u.getName());
-//		userRepository.save(f_user);
 		boolean res = userService.updateApplicationUser(u.getId(), u);
 		map.put("result", res);
 		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
@@ -92,17 +89,29 @@ public class UserController {
     @RequestMapping(value = "list",method = RequestMethod.GET)  
     public  ResponseEntity<Map<String,Object>> getUserList(@RequestParam Integer page){  
     		Map<String,Object> map = new HashMap<String,Object>();
-	    Integer	size =10; //页面大小
-        Page<ApplicationUser> paginationUser = userService.findUserNoCriteria(page, size);
+        Page<ApplicationUser> paginationUser = userService.findUserNoCriteria(page, PAGESIZE);
         map.put("result", paginationUser);
         return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);  
     }
     @RequestMapping(value = "querylist",method = RequestMethod.POST)  
     public  ResponseEntity<Map<String,Object>> getUserQueryList(@RequestParam Integer page, @RequestBody UserQuery userQuery){  
     		Map<String,Object> map = new HashMap<String,Object>();
-	    Integer	size =10; //页面大小
-        Page<ApplicationUser> paginationUser = userService.findUserCriteria(page, size, userQuery);
+        Page<ApplicationUser> paginationUser = userService.findUserCriteria(page, PAGESIZE, userQuery);
         map.put("result", paginationUser);
         return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);  
     }
+	@RequestMapping(value="/query", method=RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> DeleteUser(@RequestParam String name) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		ApplicationUser user = userRepository.findByName(name);
+		map.put("result", user);
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
+	@RequestMapping(value="/userList", method=RequestMethod.GET)
+	public ResponseEntity<Map<String,Object>> getUserListByRole(@RequestParam Integer role) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<ApplicationUser> userList = userRepository.findUsersByRole(role);
+		map.put("result", userList);
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	}
 }
