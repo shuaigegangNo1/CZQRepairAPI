@@ -22,7 +22,6 @@ import com.sgg.rest.repository.RepairRepository;
 import com.sgg.rest.repository.UserRepository;
 import com.sgg.rest.service.RepairService;
 import com.sgg.rest.util.StringUtils;
-import static com.sgg.rest.util.SystemConstants.N;
 @Service
 public class RepairServiceImpl implements RepairService {
 	@Resource  
@@ -61,6 +60,9 @@ public class RepairServiceImpl implements RepairService {
 			if (StringUtils.IsNull(repair.getContent())) {
 				f_repair.setContent(repair.getContent());
 			}
+			if (StringUtils.IsNull(repair.getTelephone())) {
+				f_repair.setTelephone(repair.getTelephone());
+			}
 			if (StringUtils.IsNull(repair.getComments())) {
 				f_repair.setComments(repair.getComments());
 			}
@@ -75,6 +77,9 @@ public class RepairServiceImpl implements RepairService {
 			}
 			if (StringUtils.IsNull(repair.getRate())) {
 				f_repair.setRate(repair.getRate());
+			}
+			if (StringUtils.IsNull(repair.getIsEvaluate())) {
+				f_repair.setIsEvaluate(repair.getIsEvaluate());
 			}
 			f_repair.setUpdate_time(new Date());
 			repairRepository.save(f_repair);
@@ -96,32 +101,44 @@ public class RepairServiceImpl implements RepairService {
             @Override  
             public Predicate toPredicate(Root<Repair> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {  
             	Predicate p2 = criteriaBuilder.like(root.get("content").as(String.class), "%"+ repairQuery.getContent() + "%"); 
-            	if(repairQuery.getUserName()!=null&&!repairQuery.getUserName().equals("")) {
+            	if(StringUtils.IsNull(repairQuery.getUserName())) {
+//            		if(repairQuery.getUserName()!=null&&!repairQuery.getUserName().equals("")) {
             		Predicate p1 = criteriaBuilder.equal(root.get("applicationUser").get("name").as(String.class), repairQuery.getUserName());
-            		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
-            			if(repairQuery.getIsFinish().equals(N)) {
-            				Predicate p3 = criteriaBuilder.notEqual(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
-            				query.where(criteriaBuilder.and(p3,p2,p1));  
-            			}else {
+            		if(StringUtils.IsNull(repairQuery.getRepair_status())) {
+//            		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
             				Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
-            				query.where(criteriaBuilder.and(p3,p2,p1));  
+            			if(StringUtils.IsNull(repairQuery.getIsEvaluate())) {
+            				Predicate p4 = criteriaBuilder.equal(root.get("isEvaluate").as(String.class), repairQuery.getIsEvaluate());
+            				query.where(criteriaBuilder.and(p4,p3,p2,p1));  
+            			}else {
+            				query.where(criteriaBuilder.and(p3,p2,p1)); 
             			}
             		}else {
-            			query.where(criteriaBuilder.and(p2,p1)); 
+            			if(StringUtils.IsNull(repairQuery.getIsEvaluate())) {
+            				Predicate p4 = criteriaBuilder.equal(root.get("isEvaluate").as(String.class), repairQuery.getIsEvaluate());
+            				query.where(criteriaBuilder.and(p4,p2,p1));  
+            			}else {
+            				query.where(criteriaBuilder.and(p2,p1)); 
+            			}
             		}
             	} else {
-            		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
-            			if(repairQuery.getIsFinish().equals(N)) {
-            				Predicate p3 = criteriaBuilder.notEqual(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
-            				query.where(criteriaBuilder.and(p3,p2));  
+            		if(StringUtils.IsNull(repairQuery.getRepair_status())) {
+//            		if(repairQuery.getRepair_status()!=null&&!repairQuery.getRepair_status().toString().equals("")) {
+            			Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
+            			if(StringUtils.IsNull(repairQuery.getIsEvaluate())){
+            				Predicate p4 = criteriaBuilder.equal(root.get("isEvaluate").as(String.class), repairQuery.getIsEvaluate());
+            				query.where(criteriaBuilder.and(p4,p3,p2));  
             			}else {
-            				Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
             				query.where(criteriaBuilder.and(p3,p2));  
             			}
-//            			Predicate p3 = criteriaBuilder.equal(root.get("repair_status").as(String.class), repairQuery.getRepair_status());
-//            			query.where(criteriaBuilder.and(p3,p2));  
+            			
             		}else {
-            			query.where(criteriaBuilder.and(p2)); 
+            			if(StringUtils.IsNull(repairQuery.getIsEvaluate())){
+            				Predicate p4 = criteriaBuilder.equal(root.get("isEvaluate").as(String.class), repairQuery.getIsEvaluate());
+            				query.where(criteriaBuilder.and(p4,p2));  
+            			}else {
+            				query.where(criteriaBuilder.and(p2)); 
+            			}
             		}
             	}
                 return query.getRestriction();  
