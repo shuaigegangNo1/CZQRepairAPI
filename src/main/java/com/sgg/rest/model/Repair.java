@@ -28,6 +28,7 @@ public class Repair {
     private String content;
     private Integer area;
     private String address;
+    private String telephone;
     private Integer repair_status;
     @OneToOne(cascade=CascadeType.ALL)
     private ApplicationUser repairman;
@@ -35,8 +36,7 @@ public class Repair {
 	@Column(name ="result",length=1024)
     private String result;
     private String rate;
-    //TODO control user if evaluate the repair
-    //private boolean isEvaluate;
+    private String isEvaluate = "n";
     private String is_vaild ="y";
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date repair_time;
@@ -76,6 +76,12 @@ public class Repair {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public String getTelephone() {
+		return telephone;
+	}
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
 	public Integer getRepair_status() {
 		return repair_status;
 	}
@@ -105,6 +111,12 @@ public class Repair {
 	}
 	public void setRate(String rate) {
 		this.rate = rate;
+	}
+	public String getIsEvaluate() {
+		return isEvaluate;
+	}
+	public void setIsEvaluate(String isEvaluate) {
+		this.isEvaluate = isEvaluate;
 	}
 	public String getIs_vaild() {
 		return is_vaild;
