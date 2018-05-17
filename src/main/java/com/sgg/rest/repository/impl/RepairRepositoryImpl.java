@@ -41,7 +41,7 @@ public class RepairRepositoryImpl implements RepairRepositoryCustom {
 	public AssertRepair getAssertRepair(Integer repairId) {
 	      EntityManager em = emf.createEntityManager();
 	      //hql not equal sql
-        Query query = em.createQuery("select new com.sgg.rest.model.AssertRepair(id,r.applicationUser.name,area,address,repair_status,content,create_time) "
+        Query query = em.createQuery("select new com.sgg.rest.model.AssertRepair(id,r.applicationUser.name,area,address,repair_status,content,telephone,create_time) "
         		+ "from Repair r where r.id= :id ");
 //        query.setParameter("name", "%"+""+"%");
          query.setParameter("id", repairId);
