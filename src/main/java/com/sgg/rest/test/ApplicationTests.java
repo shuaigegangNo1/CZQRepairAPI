@@ -1,4 +1,4 @@
-package com.sgg.rest.test;
+/*package com.sgg.rest.test;
 
 import java.io.File;
 import java.util.HashMap;
@@ -21,9 +21,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.sgg.rest.Application;
 
 import freemarker.template.Template;
-	/*
+	
 	 *	Mail Functions
-	 */
+	 
 	@RunWith(SpringJUnit4ClassRunner.class)
 	@SpringBootTest(classes = Application.class)
 	public class ApplicationTests {
@@ -124,3 +124,4 @@ import freemarker.template.Template;
 	    mailSender.send(message);
 	  }
 }
+*/
